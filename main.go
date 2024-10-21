@@ -23,11 +23,11 @@ const (
 var (
 	initRadius          float64    = 15.0
 	radius              float64    = initRadius
-	backgroundColor     color.RGBA = rl.Black
+	backgroundColor     color.RGBA = rl.White
 	movingParticleColor color.RGBA = rl.Gray
-	particleColor       color.RGBA = rl.White
+	particleColor       color.RGBA = rl.Black
 	showUI              bool       = true
-	step                float32    = 1
+	density             float32    = 1
 )
 
 type Cell struct {
@@ -106,10 +106,10 @@ func main() {
 		particles.Update()
 		if showUI {
 			particles.Draw()
-			step = gui.Slider(rl.Rectangle{10, 10, 165, 20}, "",
-				fmt.Sprintf("STEP: %2.0f", step), step, 1, 50)
+			density = gui.Slider(rl.Rectangle{X: 10, Y: 10, Width: 165, Height: 20}, "",
+				fmt.Sprintf("DENSITY: %2.0f", density), density, 1, 50)
 
-			if gui.Button(rl.Rectangle{10, 35, 100, 25}, "Reset") {
+			if gui.Button(rl.Rectangle{X: 10, Y: 35, Width: 100, Height: 25}, "Reset") {
 				reset()
 			}
 			rl.DrawText("H: Hide the UI / S: Take a screenshot", 10, int32(GridSize)-20, 15, particleColor)
@@ -190,8 +190,8 @@ func (p *Particles) Draw() {
 // }
 
 func (p *Particle) Move() {
-	p.Row += int(math.Pow(float64(-1), float64(rand.Intn(2)))) * rand.Intn(int(step)+1)
-	p.Col += int(math.Pow(float64(-1), float64(rand.Intn(2)))) * rand.Intn(int(step)+1)
+	p.Row += int(math.Pow(float64(-1), float64(rand.Intn(2)))) * rand.Intn(int(density)+1)
+	p.Col += int(math.Pow(float64(-1), float64(rand.Intn(2)))) * rand.Intn(int(density)+1)
 	// p.Row += int(math.Pow(float64(-1), float64(rand.Intn(2))))
 	// p.Col += int(math.Pow(float64(-1), float64(rand.Intn(2))))
 }
